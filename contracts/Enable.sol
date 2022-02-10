@@ -24,6 +24,7 @@ contract Enable is Ownable {
      */
     function enableContract() public onlyOwner {
         enabled = true;
+        emit EnableStatusChanged(enabled);
     }
 
     /**
@@ -31,5 +32,6 @@ contract Enable is Ownable {
      */
     function disableContract() public onlyOwner {
         enabled = false;
+        emit EnableStatusChanged(enabled);
     }
 }

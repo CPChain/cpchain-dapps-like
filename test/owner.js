@@ -1,6 +1,8 @@
 const Like = artifacts.require("Like");
+const truffleAssert = require('truffle-assertions');
 const urlStart = 'https://'
 const address_0 = '0x0000000000000000000000000000000000000000'
+
 contract("Test Owner for Like contract", (accounts) => {
     it("owner should be:" + accounts[0], async () => {
         const instance = await Like.deployed()
@@ -18,9 +20,12 @@ contract("Test Owner for Like contract", (accounts) => {
     })
     it("should change owner to:" + accounts[1], async () => {
         const instance = await Like.deployed()
-        await instance.transferOwnership(accounts[1])
+        const result = await instance.transferOwnership(accounts[1])
         const owner = await instance.owner()
         assert.equal(owner, accounts[1])
+        truffleAssert.eventEmitted(result, 'OwnershipTransferred', (ev) => {
+            return ev.previousOwner === accounts[0] && ev.newOwner === accounts[1]
+        });
     })
 
     it("should change owner failed", async () => {

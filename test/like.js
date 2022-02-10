@@ -57,11 +57,13 @@ contract("Test like for Like", (accounts) => {
         assert.equal(author2[1], 2)
     })
 
-    it("should cancel like failed ", async () => {
-        const instance = await Like.deployed()
-        await instance.dislike(urlStart + accounts[0], { from: accounts[1] })
-        const author2 = await instance.getOwnerFromUrl(urlStart + accounts[0])
-        assert.equal(author2[1], 2)
+    it("should cancel like failed", async () => {
+        try {
+            const instance = await Like.deployed()
+            await instance.dislike(urlStart + accounts[0], { from: accounts[1] })
+        } catch (error) {
+            assert.ok(error.toString())
+        } 
     })
 
     it("should like failed beacuse value is to large", async () => {
