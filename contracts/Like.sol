@@ -3,13 +3,13 @@ pragma solidity >=0.4.22 <0.9.0;
 import "./Enable.sol";
 
 contract Like is Enable {
-    event RegisterSuccess(string indexed url, address sender);
-    event Unregister(string indexed url, address sender);
-    event RecoverLink(string indexed url, address sender);
-    event LikeLink(string indexed url, address sender, uint256 amount);
-    event Dislike(string indexed url, address sender);
+    event RegisterSuccess(string url, address sender);
+    event Unregister(string url, address sender);
+    event RecoverLink(string url, address sender);
+    event LikeLink(string url, address sender, uint256 amount);
+    event Dislike(string url, address sender);
+    event SetMaxDonationLimit(uint256 limit);
 
-    // uint256 public minDonationLimit = 1 ether;
     uint256 public maxDonationLimit = 1000 ether;
 
     struct Link {
@@ -33,14 +33,10 @@ contract Like is Enable {
         _;
     }
 
-    // function setMinDonationLimit(uint256 limit) public onlyOwner {
-    //     require(limit >= 1 ether);
-    //     minDonationLimit = limit;
-    // }
-
     function setMaxDonationLimit(uint256 limit) public onlyOwner {
         require(limit >= 1 ether);
         maxDonationLimit = limit;
+        emit SetMaxDonationLimit(limit);
     }
 
     function disableLinkByAdmin(string memory url) public onlyOwner {

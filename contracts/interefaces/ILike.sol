@@ -2,11 +2,13 @@
 pragma solidity >=0.4.22 <0.9.0;
 
 interface Like {
-    event RegisterSuccess(string indexed url, address sender);
-    event Unregister(string indexed url, address sender);
-    event RecoverLink(string indexed url, address sender);
-    event LikeLink(string indexed url, address sender, uint256 amount);
-    event Dislike(string indexed url, address sender);
+    event RegisterSuccess(string url, address sender);
+    event Unregister(string url, address sender);
+    event RecoverLink(string url, address sender);
+    event LikeLink(string url, address sender, uint256 amount);
+    event Dislike(string url, address sender);
+    event SetMaxDonationLimit(uint256 limit);
+
 
     function setMaxDonationLimit(uint256 limit) external;
 

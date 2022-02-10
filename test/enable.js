@@ -1,7 +1,7 @@
 const Like = artifacts.require("Like");
 const urlStart = 'https://'
-const address_0 = '0x0000000000000000000000000000000000000000'
-contract("Test like for Like", (accounts) => { 
+const truffleAssert = require('truffle-assertions');
+contract("Test like for Like", (accounts) => {
     it("contract enabled should be true ", async () => {
         const instance = await Like.deployed()
         const enabled = await instance.enabled()
@@ -34,9 +34,13 @@ contract("Test like for Like", (accounts) => {
     })
     it("contract disabled by admin", async () => {
         const instance = await Like.deployed()
-        await instance.disableContract()
+        const result = await instance.disableContract()
         const enabled = await instance.enabled()
         assert.equal(enabled, false)
+
+        truffleAssert.eventEmitted(result, 'EnableStatusChanged', (ev) => {
+            return ev.enabled === false
+        });
     })
 
     it("should register failed because disabled by admin for " + accounts[4], async () => {
@@ -69,9 +73,12 @@ contract("Test like for Like", (accounts) => {
 
     it("contract enabled by admin", async () => {
         const instance = await Like.deployed()
-        await instance.enableContract()
+        const result = await instance.enableContract()
         const enabled = await instance.enabled()
         assert.equal(enabled, true)
+        truffleAssert.eventEmitted(result, 'EnableStatusChanged', (ev) => {
+            return ev.enabled === true
+        });
     })
 
     it("should register success for " + accounts[4], async () => {
