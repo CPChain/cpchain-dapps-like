@@ -1,8 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.4.22 <0.9.0;
-import "./Enable.sol";
+import "./lib/Enable.sol";
+import "./interfaces/ILike.sol";
+import "./interfaces/IAuthor.sol";
+import "./interfaces/IReader.sol";
 
-contract Like is Enable {
+contract Like is Enable, ILike, IAuthor, IReader {
     event RegisterSuccess(string url, address sender);
     event Unregister(string url, address sender);
     event RecoverLink(string url, address sender);
@@ -23,38 +26,38 @@ contract Like is Enable {
 
     mapping(string => Link) urlToAuthor;
 
-    modifier onlyAuthor(string memory url) {
+    modifier onlyAuthor(string url) {
         require(urlToAuthor[url].author == msg.sender);
         _;
     }
 
-    modifier onlyActivated(string memory url) {
+    modifier onlyActivated(string url) {
         require(!urlToAuthor[url].deleted && !urlToAuthor[url].disable);
         _;
     }
 
-    function setMaxDonationLimit(uint256 limit) public onlyOwner {
+    function setMaxDonationLimit(uint256 limit) external onlyOwner {
         require(limit >= 1 ether);
         maxDonationLimit = limit;
         emit SetMaxDonationLimit(limit);
     }
 
-    function disableLinkByAdmin(string memory url) public onlyOwner {
+    function disableLinkByAdmin(string url) external onlyOwner {
         urlToAuthor[url].disable = true;
     }
 
-    function enableLinkByAdmin(string memory url) public onlyOwner {
+    function enableLinkByAdmin(string url) external onlyOwner {
         urlToAuthor[url].disable = false;
     }
 
-    function registerLink(string memory url) public onlyEnabled {
+    function registerLink(string url) external onlyEnabled {
         require(urlToAuthor[url].author == address(0));
         urlToAuthor[url].author = msg.sender;
         emit RegisterSuccess(url, msg.sender);
     }
 
-    function getOwnerFromUrl(string memory url)
-        public
+    function getOwnerFromUrl(string url)
+        external
         view
         onlyEnabled
         returns (
@@ -70,22 +73,18 @@ contract Like is Enable {
         return (link.author, link.likeCount, link.donationAmount);
     }
 
-    function unregisterLink(string memory url)
-        public
-        onlyEnabled
-        onlyAuthor(url)
-    {
+    function unregisterLink(string url) external onlyEnabled onlyAuthor(url) {
         urlToAuthor[url].deleted = true;
         emit Unregister(url, msg.sender);
     }
 
-    function recoverLink(string memory url) public onlyEnabled onlyAuthor(url) {
+    function recoverLink(string url) external onlyEnabled onlyAuthor(url) {
         urlToAuthor[url].deleted = false;
         emit RecoverLink(url, msg.sender);
     }
 
-    function likeLink(string memory url)
-        public
+    function likeLink(string url)
+        external
         payable
         onlyEnabled
         onlyActivated(url)
@@ -106,7 +105,7 @@ contract Like is Enable {
         emit LikeLink(url, msg.sender, msg.value);
     }
 
-    function dislike(string memory url) public onlyEnabled onlyActivated(url) {
+    function dislike(string url) external onlyEnabled onlyActivated(url) {
         Link storage link = urlToAuthor[url];
         bool liked = link.likedAddress[msg.sender];
         //  如果已经dislike，交易不成功
