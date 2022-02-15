@@ -1,4 +1,6 @@
 # cpchain-dapps-like
+ 
+![Test Coverage Badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/zhangkai-cpchain/8e8f60e7114d071ac1c3a6fe8dc8acc7/raw/cpchain-dapps-like__heads_main.json)
 
 ## Product Vision
 This contract is used to support the community to like the news on the CPChain website and mobile wallet. Among them, mobile users directly like it, and after website users click the like button, a QR code image and download wallet guide will pop up, allowing users to download the wallet and then scan the code to like.
