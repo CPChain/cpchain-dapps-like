@@ -2,9 +2,9 @@ name: Build Status
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
   build:
@@ -43,7 +43,7 @@ jobs:
       uses: schneegans/dynamic-badges-action@v1.0.0
       with:
         auth: ${{ secrets.GIST_TOKEN }}
-        gistID: 8e8f60e7114d071ac1c3a6fe8dc8acc7
+        gistID: 82e0164b7a7f0e2a044ccc9e17c00af6
         filename: cpchain-dapps-like__${{ env.BRANCH }}.json
         label: Test Coverage
         message: ${{ env.COVERAGE }}
