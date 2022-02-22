@@ -21,7 +21,7 @@ contract("Test like for Like", (accounts) => {
 
     it("is liked should return true for " + accounts[0], async () => {
         const instance = await Like.deployed()
-        const result = await instance.isLiked(urlStart + accounts[0])
+        const result = await instance.isLiked(urlStart + accounts[0], accounts[0])
         console.log(result)
         assert.equal(result, true)
     })
@@ -68,7 +68,7 @@ contract("Test like for Like", (accounts) => {
 
     it("is liked should return false for " + accounts[0], async () => {
         const instance = await Like.deployed()
-        const result = await instance.isLiked(urlStart + accounts[0], { from: accounts[1] })
+        const result = await instance.isLiked(urlStart + accounts[0], accounts[1], { from: accounts[1] })
         assert.equal(result, false)
     })
 

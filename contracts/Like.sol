@@ -73,9 +73,9 @@ contract Like is Enable, ILike, IAuthor, IReader {
         return (link.author, link.likeCount, link.donationAmount);
     }
 
-    function isLiked(string url) external view returns (bool){
+    function isLiked(string url, address reader) external view returns (bool) {
         Link storage link = urlToAuthor[url];
-        bool liked = link.likedAddress[msg.sender];
+        bool liked = link.likedAddress[reader];
         return (liked);
     }
 

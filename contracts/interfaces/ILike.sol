@@ -8,5 +8,6 @@ interface ILike {
 
     function disableLinkByAdmin(string url) external;
 
-    function enableLinkByAdmin(string url) external;
+    function enableLinkByAdmin(string url) external;  
+     
 }

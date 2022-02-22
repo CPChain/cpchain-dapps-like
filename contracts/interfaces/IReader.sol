@@ -14,7 +14,7 @@ interface IReader {
             uint256
         );
 
-    function isLiked(string url) external view returns (bool);
+    function isLiked(string url, address reader) external view returns (bool);
 
     function likeLink(string url) external payable;
 
