@@ -73,6 +73,12 @@ contract Like is Enable, ILike, IAuthor, IReader {
         return (link.author, link.likeCount, link.donationAmount);
     }
 
+    function isLiked(string url) external view returns (bool){
+        Link storage link = urlToAuthor[url];
+        bool liked = link.likedAddress[msg.sender];
+        return (liked);
+    }
+
     function unregisterLink(string url) external onlyEnabled onlyAuthor(url) {
         urlToAuthor[url].deleted = true;
         emit Unregister(url, msg.sender);
