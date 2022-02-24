@@ -7,8 +7,6 @@ contract("Test like for Like", (accounts) => {
         await instance.registerLink(urlStart + accounts[0])
         const author = await instance.getOwnerFromUrl(urlStart + accounts[0])
         assert.equal(author[0], accounts[0])
-
-
     })
 
     it("should like success for " + accounts[0], async () => {
@@ -22,7 +20,6 @@ contract("Test like for Like", (accounts) => {
     it("is liked should return true for " + accounts[0], async () => {
         const instance = await Like.deployed()
         const result = await instance.isLiked(urlStart + accounts[0], accounts[0])
-        console.log(result)
         assert.equal(result, true)
     })
 

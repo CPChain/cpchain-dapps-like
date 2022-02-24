@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.4.22 <0.9.0;
-import "./lib/Enable.sol";
+
 import "./interfaces/ILike.sol";
 import "./interfaces/IAuthor.sol";
 import "./interfaces/IReader.sol";
+import "@cpchain-tools/cpchain-dapps-utils/contracts/lifecycle/Enable.sol";
 
 contract Like is Enable, ILike, IAuthor, IReader {
     event RegisterSuccess(string url, address sender);
